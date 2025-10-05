@@ -7,6 +7,10 @@
 </head>
 <body>
     <p> Witam na stronie bloga</p>
-    <a href="https://www.youtube.com/">yt</a>
+    {% for post in posts %}
+    <p>opublikowany : {{post.published_date}}</p>
+    <h2><a href="">{{post.title}}</a></h2>
+    <em>{{post.text|linebreaksbr}}</em>
+    {% endfor %}
 </body>
 </html>
