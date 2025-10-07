@@ -1,17 +1,14 @@
-<!DOCTYPE html>
-<html lang="pl">
-<head>
-    <meta charset="UTF-8">
-    <title>blog dla programistów</title>
 
-</head>
-<body>
-    <p> Witam na stronie bloga</p>
-    <p>test</p>
+{% extends 'blog/base.html' %}
+{% block content %}
     {% for post in posts %}
-    <p>opublikowany : {{post.published_date}}</p>
-    <h2><a href="">{{post.title}}</a></h2>
-    <em>{{post.text|linebreaksbr}}</em>
+    <div class="container">
+
+
+
+        <p>opublikowany : {{post.published_date}}</p>
+        <h2><a href="{% url 'post_detail' pk=post.pk %}">{{post.title}}</a></h2>
+        <em>{{post.text|linebreaksbr}}</em>
+    </div>
     {% endfor %}
-</body>
-</html>
+{% endblock %}

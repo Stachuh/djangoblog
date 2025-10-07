@@ -1,0 +1,14 @@
+h1 a,h2 a {
+    color: orange;
+}
+
+
+
+.container{
+    margin: 0 auto;
+    text-align: center;
+    width: 1580px;
+    align-items: center;
+
+
+}
