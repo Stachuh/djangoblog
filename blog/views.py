@@ -1,20 +1,29 @@
-from django.shortcuts import render, get_object_or_404
-from .models import Post
+from django.contrib.auth.forms import UserCreationForm
+from django.shortcuts import render, get_object_or_404, redirect
+from django.views.decorators.http import require_POST
+from pyexpat.errors import messages
+
+from .models import Post, RegisterForm
 from django.utils import timezone
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
-from .forms import ImgForm
+from .forms import PostForm, CommentForm
 from django.views.generic import DetailView, TemplateView
 from django.views.generic import TemplateView
+from django.contrib import messages
+from django.views.decorators.http import require_POST
+from django.contrib.auth import logout
+
 
 
 class Image(TemplateView):
-    form = ImgForm
+    form = PostForm
     template_name = 'blog/image.html'
 
 
     def post(self, request, *args, **kwargs):
-        form = ImgForm(request.POST, request.FILES)
+        form = PostForm(request.POST, request.FILES)
+
         if form.is_valid():
             obj = form.save()
             return HttpResponseRedirect(reverse_lazy('image_display', kwargs={'pk': obj.id}))
@@ -41,9 +50,73 @@ def post_list(request):
 
 def post_detail(request,pk):
     post = get_object_or_404(Post, pk=pk)
-    return render(request,'blog/post_detail.html',{'post':post})
+    komętarze = post.comments.all()
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.author = request.user
+            comment.post = post
+            comment.save()
+            return redirect('post_detail', pk=post.pk)
+    else:
+        form = CommentForm()
+    return render(request,'blog/post_detail.html',{'post':post,'form':form,'komętarze':komętarze})
 
 
 def error404_view(request,exception):
     data = {'name': 'Blog dla programistów'}
     return render(request,'blog/404.html',data)
+
+
+def post_new(request):
+
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.published_date = timezone.now()
+            post.save()
+            return redirect('post_detail',pk=post.pk)
+    else:
+        form = PostForm()
+    return render(request,'blog/post_edit.html',{'form':form})
+
+def post_edit(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES, instance=post)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.published_date = timezone.now()
+            post.save()
+            return redirect('post_detail',pk=post.pk)
+    else:
+        form = PostForm(instance=post)
+    return render(request,'blog/post_edit.html',{'form':form})
+
+
+
+
+def register(request):
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            messages.success(request, 'Konto zostało utworzone!')
+            return redirect('login')
+    else:
+        form = RegisterForm()
+    return render(request,'blog/register.html',{'form':form})
+
+
+
+def logout_get(request):
+    logout(request)
+    return redirect('post_list')
+
+def base(request):
+    return render(request, 'base.html')

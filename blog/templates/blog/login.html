@@ -1,0 +1,29 @@
+{% load static%}
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static 'blog.css' %}">
+</head>
+<body>
+    <div class="contianer">
+        <div class="main-login">
+              <h2  >LOgowanie</h2>
+        {% if form.errors %}
+            <p>Niepoprawna nazwa użytkownika lub hasło</p>
+        {% endif%}
+
+        <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Zaloguj</button>
+        </form>
+        <p>Nie masz konta <a href="{% url 'register' %}">Zarejestruj się</a></p>
+        </div>
+      
+
+
+
+    </div>
+</body>
+</html>
