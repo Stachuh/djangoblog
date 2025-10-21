@@ -6,7 +6,7 @@
         <div class="flex">
             <div class="obr">
                 <div class="main-author">
-                    <p> <a class="auth-link" href="">{{post.author}}</a></p>
+                    <p> <a class="auth-link" href="{% url 'user' pk=post.pk %}">{{post.author}}</a></p>
                 </div>
                <!-- <h2><a href="{% url 'post_detail' pk=post.pk %}">{{post.title}}</a></h2> -->
                 <div class="articule-text" >

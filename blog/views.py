@@ -120,3 +120,9 @@ def logout_get(request):
 
 def base(request):
     return render(request, 'base.html')
+
+
+def user(request,pk):
+    post = get_object_or_404(Post, pk=pk)
+    posts = Post.objects.filter(author=post.author)
+    return render(request, 'blog/user.html', {'post':post,'posts':posts})

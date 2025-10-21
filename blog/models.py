@@ -43,3 +43,9 @@ class RegisterForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['username', 'email', 'password1', 'password2']
+
+
+
+class User(models.Model):
+    post = models.ForeignKey('Post', on_delete=models.CASCADE, related_name='user')
+    author = models.ForeignKey('auth.User', on_delete=models.CASCADE)
