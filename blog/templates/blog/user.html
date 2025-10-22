@@ -1,13 +1,42 @@
-<!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="{% static 'blog.css' %}">
 </head>
 <body>
+    <div class="contianer">
+        <h1>{{post.author}}:  </h1>
+    </div>
   {% for post in posts %}
-  <p>{{post.author}}</p>
-  <p>zyd</p>
+
+      <div class="contianer">
+        <div class="flex">
+            <div class="obr">
+                <div class="main-author">
+                    <p> <a class="auth-link" href="{% url 'user' pk=post.pk %}">{{post.author}}</a></p>
+                </div>
+               <!-- <h2><a href="{% url 'post_detail' pk=post.pk %}">{{post.title}}</a></h2> -->
+                <div class="articule-text" >
+                    <p>{{post.text}}</p>
+                </div>
+                {% if post.image %}
+                    <img src="{{ post.image.url }}" alt="obrazek" style="max-width: 100%;">
+                {% endif %}
+                {% if post.video %}
+                <video src="{{ post.video.url}}" controls></video>
+                {% endif%}
+
+
+
+            </div>
+
+        </div>
+
+
+
+    </div>
 {% endfor %}
 </body>
 </html>

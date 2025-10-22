@@ -1,0 +1,9 @@
+{% load static %}
+
+{% if post.video %}
+<video width="640px" height="240px"  controls>
+  <source src="{{ post.video.url }}" type="video/mp4" >
+  Twoja przeglądarka nie obsługuje video
+</video>
+
+{% endif%}

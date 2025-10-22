@@ -35,6 +35,24 @@ class Image(TemplateView):
     def get(self,request,*args,**kwargs):
         return self.post(request,*args,**kwargs)
 
+class Video(TemplateView):
+    form = PostForm
+    template_name = 'blog/video.html'
+    def post(self,request,*args,**kwargs):
+        form = PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            obj = form.save()
+            return HttpResponseRedirect(reverse_lazy('video_display', kwargs={'pk': obj.id}))
+        context = self.get_context_data(form=form)
+        return self.render_to_response(context)
+    def get(self,request,*args,**kwargs):
+        return self.post(request,*args,**kwargs)
+
+class VideoDisplay(TemplateView):
+    model = Post
+    template_name = 'blog/video_display.html'
+    context_object_name = 'video'
+
 
 class ImageDisplay(DetailView):
     model = Post
