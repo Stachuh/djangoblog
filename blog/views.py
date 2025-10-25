@@ -91,6 +91,10 @@ def post_new(request):
 
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES)
+        print("POST:", request.POST)
+        print('files:',request.FILES)
+        print(form.fields['image'].widget.__class__)
+
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user

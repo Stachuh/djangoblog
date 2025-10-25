@@ -15,6 +15,9 @@
         {% if post.image %}
         <img src="{{ post.image.url }}" alt="obrazek" width="250">
         {% endif %}
+        {% if post.video %}
+      <video src="{{ post.video.url }}" controls width="250"></video>
+        {% endif %}
       <p>{{ post.text|linebreaksbr}}</p>
       <h2>komętarze</h2>
       {% for kometnarz in komętarze %}
